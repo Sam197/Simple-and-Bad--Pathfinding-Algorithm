@@ -89,7 +89,7 @@ def bubbleSort(testList, otherList):    #Bubble sort ftw
                 through = False
         #print(testList)
         if through == True:
-            return otherList          #Vauge variables ftw
+            return otherList          #Vauge variable names ftw
 
 def print_grid(grid):               #Method that prints the grid to the console, not used anymore 
 
