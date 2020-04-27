@@ -5,7 +5,7 @@ import time
 
 SHOW_AT_ALL = True    #For speed, doesn't have any visuals
 SHOW_STEP = True      #Shows each iteration of the loops
-STEP_BY_STEP = True  #Iterates over in the loop on mouse click
+STEP_BY_STEP = False  #Iterates over in the loop on mouse click
 DRAW_OBSTICALS = True
 
 if STEP_BY_STEP:
@@ -26,15 +26,15 @@ if SHOW_AT_ALL:
 
 #Max X = 93 Y = 47   #Can get to around 1750 obsticles
 
-GRIDX = 50
-GRIDY = 25
+GRIDX = 75
+GRIDY = 40
 obsticals = 500
 #obsticals = (GRIDX*GRIDY)*0.4     #Genral max amount of obsitcals in the grid
 global attempts
 attempts = 0
 TILE_SIZE = 20
 if SHOW_AT_ALL:
-    FONT = pygame.font.SysFont('comicsans', 20)
+    FONT = pygame.font.SysFont('comicsans', TILE_SIZE)
 
 global startstart
 startstart = time.time()
@@ -164,22 +164,31 @@ def main():
     if DRAW_OBSTICALS:
         drawing = True
         mousedown = False
+        leftDown = False
+        rightDown = False
         while drawing:
             for event in pygame.event.get():
                 if event.type == pygame.MOUSEBUTTONDOWN:
-                    mousedown = True
+                    leftDown, _, rightDown = pygame.mouse.get_pressed()
                     print(x)
                 if event.type == pygame.MOUSEBUTTONUP:
-                    mousedown = False
+                    leftDown = False
+                    rightDown = False
                 if event.type == pygame.KEYDOWN:
                     if event.key == pygame.K_RETURN:
                         drawing = False
-                if mousedown:
+                if leftDown:
                     x, y = pygame.mouse.get_pos()
                     x = int(x/TILE_SIZE)
                     y = int(y/TILE_SIZE)
-                    grid[y][x] = "#"
+                    if grid[y][x] != "S" or grid[y][x] != "F":
+                        grid[y][x] = "#"
                     starting_grid[y][x] = "#"
+                if rightDown:
+                    x, y = pygame.mouse.get_pos()
+                    x = int(x/TILE_SIZE)
+                    y = int(y/TILE_SIZE)
+                    grid[y][x] = 0
             show_to(grid, screen)
 
     #print_grid(grid)
