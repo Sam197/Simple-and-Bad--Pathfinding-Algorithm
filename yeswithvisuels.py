@@ -5,7 +5,8 @@ import time
 
 SHOW_AT_ALL = True    #For speed, doesn't have any visuals
 SHOW_STEP = True      #Shows each iteration of the loops
-STEP_BY_STEP = False  #Iterates over in the loop on mouse click
+STEP_BY_STEP = True  #Iterates over in the loop on mouse click
+DRAW_OBSTICALS = True
 
 if STEP_BY_STEP:
     SHOW_STEP = True  #These staments are here to make sure things won't crash if I'm an idiot
@@ -25,9 +26,9 @@ if SHOW_AT_ALL:
 
 #Max X = 93 Y = 47   #Can get to around 1750 obsticles
 
-GRIDX = 93
-GRIDY = 47
-obsticals = 1600
+GRIDX = 50
+GRIDY = 25
+obsticals = 500
 #obsticals = (GRIDX*GRIDY)*0.4     #Genral max amount of obsitcals in the grid
 global attempts
 attempts = 0
@@ -38,7 +39,7 @@ if SHOW_AT_ALL:
 global startstart
 startstart = time.time()
 
-print("Oh dear")            #First line of code written
+print("Oh dear")            #First line of code written do not remove
 
 def make_grid():
     grid = []
@@ -133,14 +134,14 @@ def main():
     starting_grid = make_grid()
     x = 0
 
-    while x < obsticals:                        #Add in obsicals randomly
-        gy = random.randrange(0, GRIDY + 1)
-        gx = random.randrange(0, GRIDX + 1)
-        if grid[gy][gx] != "#":               
-            grid[gy][gx] = "#"
-            starting_grid[gy][gx] = "#"
-            x += 1
-
+    if not DRAW_OBSTICALS:
+        while x < obsticals:                        #Add in obsicals randomly
+            gy = random.randrange(0, GRIDY + 1)
+            gx = random.randrange(0, GRIDX + 1)
+            if grid[gy][gx] != "#":               
+                grid[gy][gx] = "#"
+                starting_grid[gy][gx] = "#"
+                x += 1
 
     #chose random start and end points
     # curX = random.randrange(1, GRIDX - 1)
@@ -151,7 +152,7 @@ def main():
     # Fx = random.randrange(1, GRIDX - 1)
     # grid[Fy][Fx] = "F"
     # starting_grid[Fy][Fx] = "F"
-
+    
     #Chosing set start and end points
     curX = 2
     curY = 2
@@ -159,6 +160,27 @@ def main():
     starting_grid[curY][curX] = "S"
     grid[GRIDY-2][GRIDX-2] = "F"
     starting_grid[GRIDY-2][GRIDX-2] = "F"
+    
+    if DRAW_OBSTICALS:
+        drawing = True
+        mousedown = False
+        while drawing:
+            for event in pygame.event.get():
+                if event.type == pygame.MOUSEBUTTONDOWN:
+                    mousedown = True
+                    print(x)
+                if event.type == pygame.MOUSEBUTTONUP:
+                    mousedown = False
+                if event.type == pygame.KEYDOWN:
+                    if event.key == pygame.K_RETURN:
+                        drawing = False
+                if mousedown:
+                    x, y = pygame.mouse.get_pos()
+                    x = int(x/TILE_SIZE)
+                    y = int(y/TILE_SIZE)
+                    grid[y][x] = "#"
+                    starting_grid[y][x] = "#"
+            show_to(grid, screen)
 
     #print_grid(grid)
     if SHOW_AT_ALL:
